@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cat Downloader</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        #cat { margin-top: 20px; max-width: 100%; display:none; }
+    </style>
+</head>
+<body>
+    <h1>Cat Downloader</h1>
+    <button id="download">Get a Cat!</button>
+    <img id="cat" alt="Random cat" />
+    <script>
+    document.getElementById('download').addEventListener('click', function() {
+        fetch('https://api.thecatapi.com/v1/images/search')
+            .then(resp => resp.json())
+            .then(data => {
+                const imgUrl = data[0].url;
+                const img = document.getElementById('cat');
+                img.src = imgUrl;
+                img.style.display = 'block';
+
+                const a = document.createElement('a');
+                a.href = imgUrl;
+                a.download = 'cat.jpg';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            })
+            .catch(err => console.error('Cat fetch failed', err));
+    });
+    </script>
+</body>
+</html>
